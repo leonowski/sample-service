@@ -1,0 +1,44 @@
+job "sample-service" {
+  type = "service"
+  region = "west"
+  datacenters = ["aws"]
+  constraint {
+    attribute = "${meta.type}"
+    value = "back"
+    }
+  group "main" {
+    network {
+      port "http" {
+      static = 5000
+    }
+  }
+
+
+    count = 1
+
+    task "sample-service" {
+      driver = "docker"
+      service {
+        check {
+          type     = "http"
+          port     = "http"
+          path     = "/healthcheck"
+          interval = "5s"
+          timeout  = "2s"
+        }
+      }
+
+
+
+
+      config {
+        image = "$REPO:$TAG"
+        force_pull = true
+        network_mode = "host"
+
+
+      }
+    }
+
+  }
+}

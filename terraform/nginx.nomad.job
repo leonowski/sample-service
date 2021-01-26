@@ -1,0 +1,44 @@
+job "nginx" {
+  constraint {
+    attribute = "${meta.type}"
+    value = "front"
+    }
+  type = "service"
+  region = "west"
+  datacenters = ["aws"]
+
+  group "front" {
+    network {
+      port "http" {
+      static = 80
+    }
+      port "nomad-api" {
+      static = 8675
+  }
+  }
+
+
+    count = 1
+
+    task "nginx" {
+      driver = "docker"
+      service {
+      }
+
+
+
+
+      config {
+        image = "nginx"
+        force_pull = true
+        network_mode = "host"
+        volumes = [
+       "/etc/nginx:/etc/nginx"
+       ]
+
+
+      }
+    }
+
+  }
+}

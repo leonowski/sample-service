@@ -1,0 +1,10 @@
+[Unit]
+Description=Nomad
+Wants=network-online.target
+After=network-online.target
+[Service]
+ExecStart= /bin/sh -c "/usr/local/sbin/nomad agent -config=/etc/nomad.conf.d/nomad.conf"
+Restart=always
+RestartSec=10
+[Install]
+WantedBy=multi-user.target

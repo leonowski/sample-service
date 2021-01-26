@@ -1,0 +1,24 @@
+server {
+  enabled = false
+}
+
+datacenter = "aws"
+region     = "west"
+
+data_dir = "/nomad/data/"
+
+client {
+  enabled       = true
+  servers       = ["172.32.1.10"]
+  meta {
+    type           = "back"
+  }
+}
+
+plugin "docker" {
+  config {
+    volumes {
+      enabled = true
+    }
+}
+}
