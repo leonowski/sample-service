@@ -1,5 +1,6 @@
+
 TAG ?= latest
-LOCATION := $(shell nomad exec $$(nomad status nginx | grep running | grep -v Status | awk '{print $$1}') curl -s ifconfig.co)
+LOCATION ?= $(shell nomad exec $$(nomad status nginx | grep running | grep -v Status | awk '{print $$1}') curl -s ifconfig.co)
 REPO ?= leonowski/sample-service
 
 .PHONY: build
@@ -23,14 +24,14 @@ clean:
 build-and-deploy: push nomad.job
 	nomad run -verbose nomad.job
 	make clean
-	sleep 30
-	curl -s "http://${LOCATION}"
-	echo "Service is now available at http://${LOCATION}"
+	@sleep 15
+	@curl -s "http://$(LOCATION)"
+	@echo "Service is now available at http://$(LOCATION)"
 
 .PHONY: deploy-tag-only
 deploy-tag-only: nomad.job
 	nomad run -verbose nomad.job
 	make clean
-	sleep 30
-	@curl -s "http://${LOCATION}"
-	@echo "Service is now available at http://${LOCATION}"
+	@sleep 15
+	@curl -s "http://$(LOCATION)"
+	@echo "Service is now available at http://$(LOCATION)"
